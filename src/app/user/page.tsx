@@ -1,17 +1,10 @@
 "use client";
-import {
-  VStack,
-  Box,
-  Text,
-  Heading,
-  Avatar,
-  Skeleton,
-  Stack,
-} from "@chakra-ui/react";
+import { Card, Heading } from "@chakra-ui/react";
 import { useData } from "../hooks/useData";
 import Loading from "./loading";
 import { AppProvider, useAppContext } from "../context/appContext";
 import Error from "../components/error";
+import HeaderInfoPage from "../components/headerInfoPage";
 
 const User = () => {
   const { inputValue } = useAppContext();
@@ -20,31 +13,20 @@ const User = () => {
   if (error) {
     return <Error />;
   }
-
+  const UserProps = {
+    avatar_url: newUser.avatar,
+    name: newUser.name,
+    login: newUser.userName,
+    company: newUser.company,
+    location: newUser.location,
+    twitter_username: newUser.twitter,
+  };
   return (
     <>
-      <AppProvider>
-        <VStack>
-          <Heading>Users Info</Heading>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Box>
-              <Avatar size="xl" src={newUser.avatar}></Avatar>
-              <Text>{newUser.twitter}</Text>
-              <Text>Twitter account</Text>
-              <Text>Bio</Text>
-              <Text>Location</Text>
-              <Text>
-                Public Repositories: Stars: Number of stars the repository has
-                received. Forks: Number of forks. Language: The main programming
-                language used in the repository.
-              </Text>
-              <Text>Numbers of followers</Text>
-            </Box>
-          )}
-        </VStack>
-      </AppProvider>
+      <Card width="xl">
+        <Heading>Users Info</Heading>
+        {isLoading ? <Loading /> : <HeaderInfoPage {...UserProps} />}
+      </Card>
     </>
   );
 };
